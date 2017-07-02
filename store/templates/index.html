@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{# 这是店铺列表，下面的内容要改 #}
+
+{% block content %}
+<table>
+    <tbody class="table">
+        {% for store in stores %}
+        <tr>
+            <td><a href="{% url 'store' store.id %}">{{store.name}}</a>
+            <div>
+                地址：{{store.address}}<br>
+                电话：{{store.phone_number}}<br>
+                {{store.reviews.count}} 条点评
+            </div>
+            <hr>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
