@@ -5,11 +5,19 @@ from django.utils import timezone
 
 
 class Store(models.Model):
+    # id = models.IntegerField()
     name = models.CharField(max_length=50, verbose_name="店名")
     phone_number = models.CharField(max_length=50, verbose_name="电话")
-    address = models.TextField(verbose_name="地址")
+    star = models.IntegerField(verbose_name="星级", default = 0)
+    address = models.TextField(verbose_name="地址", default = '')
     review_number = models.IntegerField(verbose_name="评论数")
-
+    area = models.CharField(max_length=50, verbose_name="区域", default = '')
+    category = models.CharField(max_length=50, verbose_name="类别", default = '')
+    per_consume = models.IntegerField(verbose_name="人均消费", default = 0)
+    opening_time = models.CharField(max_length=50, verbose_name="营业时间", default = '')
+    taste_score = models.FloatField(verbose_name="口味", default = 0.0)
+    environment_score = models.FloatField(verbose_name="环境", default = 0.0)
+    service_score = models.FloatField(verbose_name="服务", default = 0.0)
 
 class Review(models.Model):
     # id = models.IntegerField()

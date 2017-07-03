@@ -11,4 +11,4 @@ class ReviewForm(forms.ModelForm):
 class StoreForm(forms.ModelForm):
     class Meta:
         model = Store
-        fields = ('name', 'phone_number', 'address')
+        fields = ('name', 'phone_number','star', 'address', 'review_number', 'area', 'category', 'per_consume', 'opening_time','taste_score', 'environment_score', 'service_score')

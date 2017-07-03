@@ -25,7 +25,7 @@ SECRET_KEY = 'l6q7#1(no1d%sb^yep=4t43++etb6d=kw53nnu!l7&(81%@mo2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['192.168.55.33']
 
 
 # Application definition
@@ -80,7 +80,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'forum',
         'USER': 'root',
-        'PASSWORD': 'czm19960619',
+        'PASSWORD': '',
+	'OPTIONS':{
+		'init_command':  "SET sql_mode='STRICT_TRANS_TABLES'"
+	}
     }
 }
 

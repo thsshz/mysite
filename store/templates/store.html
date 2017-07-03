@@ -3,11 +3,38 @@
 
 {% block content %}
 <div class="panel panel-default">
+    <div class="breadcrumb">
+        <a >
+            {{store.area}}
+        </a>
+        &gt;
+        <a >
+            {{store.category}}
+        </a>
+        &gt;
+    	<span>{{store.name}}</span>
+</div>
+       
     <div class="panel-heading">
         <h3>{{store.name}}</h3>
+	<div class="brief-info">
+            <span title="准五星商户" class="mid-rank-stars mid-str45">{{store.star}}星商户</span>
+            <span id="reviewCount" class="item">{{store.review_number}}条评论</span>
+
+            <span id="avgPriceTitle" class="item">人均：{{store.per_consume}}元</span>
+            <span id="comment_score">
+	    
+	        <span class="item">口味：{{store.taste_score}}</span>
+
+	        <span class="item">环境：{{store.environment_score}}</span>
+
+	        <span class="item">服务：{{store.service_score}}</span>
+            </span>
+        </div>
         <small>
+            地址：{{store.address}}<br>
             电话：{{store.phone_number}}<br>
-            地址：{{store.address}}
+            营业时间：{{store.opening_time}}
         </small>
     </div>
     <div class="panel-body word-wrap">
@@ -17,15 +44,7 @@
 </div>
 
 <ul class="list-group">
-    <li class="list-group-item">{{store.reviews.count}} 条点评
-        <div class = "pull-right">点评排序：
-        <select id="review-order">
-            <option value="latest" selected="selected">最新点评</option>
-            <option value="likest">点赞数</option>
-            <option value="newest">最早点评</option>
-        </select>
-        </div>
-    </li>
+    <li class="list-group-item">{{store.reviews.count}} 条点评</li>
     {% for review in store.reviews.all %}
     <li class="list-group-item clearfix">
         <div>
@@ -34,14 +53,15 @@
         </div>
         <div>
             <small>
-                总体：{{review.star}}星   口味：{{review.taste_score}}   环境：{{review.environment_score}}   服务：{{review.service_score}}
+                总体：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
             </small>
         </div>
         <div class="word-wrap">{{review.content}}</div>
     </li>
     {% endfor %}
 </ul>
-
+<div class="pull-right"><a href="{% url 'review' store.id %}">更多评论</a></div>
+<br><br>
 <div class="panel panel-default">
     <div class="panel-heading">填写评论</div>
     <div class="panel-body">
