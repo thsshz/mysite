@@ -28,5 +28,17 @@ class Review(models.Model):
     service_score = models.IntegerField(verbose_name="服务")
     content = models.TextField(verbose_name="评价内容")
     store = models.ForeignKey('Store', related_name='reviews', related_query_name='review')
-    create_at = models.DateTimeField(default=timezone.now)
+    create_at = models.DateField(default=timezone.now)
     like = models.IntegerField(verbose_name="点赞数")
+
+class Area(models.Model):
+    # id = models.IntegerField()
+    name = models.CharField(max_length=50, verbose_name="区域名")
+    state = models.BooleanField(verbose_name="状态", default=False)
+    num = models.BigIntegerField(verbose_name="数量", default = 0)
+
+class Category(models.Model):
+    # id = models.IntegerField()
+    name = models.CharField(max_length=50, verbose_name="类型名")
+    state = models.BooleanField(verbose_name="状态", default=False)
+    num = models.BigIntegerField(verbose_name="数量", default = 0)

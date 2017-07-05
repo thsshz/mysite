@@ -4,7 +4,7 @@
 <h3>新增店铺</h3>
 {% include 'messages.html' %}
 <div>
-    <form method="POST" action="{% url 'create' %}">
+    <form method="POST" action="{% url 'add_alldata' %}">
         {% csrf_token %}
         {% bootstrap_form_errors form %}
         {% bootstrap_form form %}

@@ -4,22 +4,22 @@
 {% block content %}
 <div class="panel panel-default">
     <div class="breadcrumb">
-        <a >
+        <a href = "{% url 'area_index' store.id %}" >
             {{store.area}}
         </a>
         &gt;
-        <a >
+        <a href = "{% url 'category_index' store.id %}" >
             {{store.category}}
         </a>
         &gt;
     	<span>{{store.name}}</span>
-</div>
-       
+    </div>
+<div class="main" style="display:inline-block;vertical-align:top;width:600px">    
     <div class="panel-heading">
         <h3>{{store.name}}</h3>
 	<div class="brief-info">
             <span title="准五星商户" class="mid-rank-stars mid-str45">{{store.star}}星商户</span>
-            <span id="reviewCount" class="item">{{store.review_number}}条评论</span>
+            <span id="reviewCount" class="item">{{store.reviews.count}}条评论</span>
 
             <span id="avgPriceTitle" class="item">人均：{{store.per_consume}}元</span>
             <span id="comment_score">
@@ -37,15 +37,10 @@
             营业时间：{{store.opening_time}}
         </small>
     </div>
-    <div class="panel-body word-wrap">
-        店铺简介
-    </div>
     <div class="panel-footer"></div>
-</div>
-
 <ul class="list-group">
     <li class="list-group-item">{{store.reviews.count}} 条点评</li>
-    {% for review in store.reviews.all %}
+    {% for review in first_reviews %}
     <li class="list-group-item clearfix">
         <div>
             {% bootstrap_icon 'user' %}<b>{{review.author}}</b>
@@ -60,7 +55,29 @@
     </li>
     {% endfor %}
 </ul>
-<div class="pull-right"><a href="{% url 'review' store.id %}">更多评论</a></div>
+<div class="pull-right"><a href="{% url 'review' store.id %}">更多评论({{store.reviews.count}})</a></div>
+</div>
+<div class="panel panel-default" style="display:inline-block;vertical-align:top;width:300px">
+<ul class="list-group">
+    <li class="list-group-item">猜你喜欢</li>
+    {% for nearest_store in nearest_stores%}
+    <li class="list-group-item clearfix">
+    <div>
+	<div class="info-name">
+		<h3><a href="{% url 'store' nearest_store.id %}">{{nearest_store.name}}</a></h3>
+                <span title="准五星商户" class="mid-rank-stars mid-str45">{{nearest_store.star}}星商户</span>
+	</div>
+	<div class="info-list">
+	    <small>
+            {{nearest_store.area}}
+            人均¥{{nearest_store.per_consume}}
+            </small>
+	</div>
+    </div>
+</li>
+{% endfor %}
+</ul>
+</div>
 <br><br>
 <div class="panel panel-default">
     <div class="panel-heading">填写评论</div>
@@ -71,6 +88,7 @@
             {% buttons submit='提交' %}{% endbuttons %}
         </form>
     </div>
+</div>
 </div>
 
 {% endblock %}

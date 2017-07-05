@@ -3,9 +3,72 @@
 {# 这是店铺列表，下面的内容要改 #}
 
 {% block content %}
+
+<form method="post" action="{% url 'filter' %}">
+    {% csrf_token %}
+    <table>
+        <tbody>
+            <tr class="form-group">
+                {% for area in areas %}
+                <td>
+                    <label for="{{area.name}}">{{area.name}}({{area.num}})</label>
+                    {% if area.state %}
+                    <input type="checkbox" id="{{area.name}}" name="{{area.name}}" class="form-control" checked="checked"/>
+                    {% else %}
+                    <input type="checkbox" id="{{area.name}}" name="{{area.name}}" class="form-control"/>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            <tr class="form-group">
+                {% for category in categories %}
+                <td>
+                    <label for="{{category.name}}">{{category.name}}({{category.num}})</label>
+                    {% if category.state %}
+                    <input type="checkbox" id="{{category.name}}" name="{{category.name}}" class="form-control" checked="checked"/>
+                    {% else %}
+                    <input type="checkbox" id="{{category.name}}" name="{{category.name}}" class="form-control"/>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        人均消费：
+        {% if per_consume_min == -1 %}
+        <input type="number" id="per_consume_min" name="per_consume_min" placeholder="最低" />
+        {% else %}
+        <input type="number" id="per_consume_min" name="per_consume_min" value="{{per_consume_min}}" />
+        {% endif %}
+        —
+        {% if per_consume_max == -1 %}
+        <input type="number" id="per_consume_max" name="per_consume_max" placeholder="最高" />
+        {% else %}
+        <input type="number" id="per_consume_max" name="per_consume_max" value="{{per_consume_max}}" />
+        {% endif %}
+    </div>
+    <div>
+        <select id="order_by" name="order_by" >
+            {% for key,value in order_by_dic.items %}
+            {% if value == order_by_get %}
+            <option value="{{value}}" selected ="selected">{{key}}</option>
+            {% else %}
+            <option value="{{value}}">{{key}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">确认</button>
+</form>
+
+<div>
+    <a href="{% url 'load_area_category' %}">load_area_category</a>
+</div>
+
 <table>
     <tbody class="table">
-        {% for store in stores %}
+        {% for store in stores_page %}
         <tr>
             <td><a href="{% url 'store' store.id %}">{{store.name}}</a>
             <div>
@@ -19,4 +82,20 @@
         {% endfor %}
     </tbody>
 </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if stores_page.has_previous %}
+        <a href="?page={{ stores_page.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ stores_page.number }} of {{ stores_page.paginator.num_pages }}.
+        </span>
+
+        {% if stores_page.has_next %}
+        <a href="?page={{ stores_page.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
+

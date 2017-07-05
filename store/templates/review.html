@@ -2,16 +2,16 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<div class="main" style="display:inline-block;vertical-align:top">
+<div class="main" style="display:inline-block;vertical-align:top;width:800px">
 <ul class="list-group">
-    <li class="list-group-item">{{star}}点评：{{reviews.count}}条&emsp;
+    <li class="list-group-item">{{star}}点评：{{all}}条&emsp;
         <div style="display:inline-block"><a href="{% url 'review' store.id %}">全部</a></div>&emsp;
-        <div style="display:inline-block"><a href="{% url 'review_5star' store.id %}">5星</a></div>&emsp;
-        <div style="display:inline-block"><a href="{% url 'review_4star' store.id %}">4星</a></div>&emsp;
-        <div style="display:inline-block"><a href="{% url 'review_3star' store.id %}">3星</a></div>&emsp;
-        <div style="display:inline-block"><a href="{% url 'review_2star' store.id %}">2星</a></div>&emsp;
-        <div style="display:inline-block"><a href="{% url 'review_1star' store.id %}">1星</a></div>
-        <form method="POST" action="{{path}}/sort" class="pull-right">
+        <div style="display:inline-block"><a href="{% url 'review_star' store.id 50 %}">50星</a></div>&emsp;
+        <div style="display:inline-block"><a href="{% url 'review_star' store.id 40 %}">40星</a></div>&emsp;
+        <div style="display:inline-block"><a href="{% url 'review_star' store.id 30 %}">30星</a></div>&emsp;
+        <div style="display:inline-block"><a href="{% url 'review_star' store.id 20 %}">20星</a></div>&emsp;
+        <div style="display:inline-block"><a href="{% url 'review_star' store.id 10 %}">10星</a></div>
+        <form method="POST" action="/{{sort_path}}" class="pull-right">
             点评排序：
             {% csrf_token %}
             <select name="review-order">
@@ -30,38 +30,47 @@
             {% bootstrap_icon 'user' %}<b>{{review.author}}</b>
             {% bootstrap_icon 'time' %}{{review.create_at}}
         </div>
+        <div class="pull-right"><small>赞({{review.like}})</small></div>
         <div>
             <small>
-                总体：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
+                星级：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
             </small>
         </div>
         <div class="word-wrap">{{review.content}}</div>
     </li>
     {% endfor %}
+    <div class="pull-right">
+    <!-- 如果当前是第一页，就不显示【上一页】链接 -->
+    {% ifnotequal curPage 1 %}
+    <a href="?curPage={{ curPage|add:'-1' }}&&allPage={{ allPage }}&&pageType=pageUp">
+        上一页
+    </a>
+    {% endifnotequal %}
+
+    第{{ curPage }}/{{ allPage }}页
+
+    <!-- 如果当前是最后一页，就不显示【下一页】链接 -->
+    {% ifnotequal curPage allPage %}
+    <a href="?curPage={{ curPage|add:'1' }}&&allPage={{ allPage }}&&pageType=pageDown">
+        下一页
+    </a>
+    {% endifnotequal %}
+    </div>
 </ul>
 </div>
-    <div class="aside" style="display:inline-block;vertical-align:top">
-        <!--商户信息-->
-    <div class="modebox shop-info shop-info-name">
-	<div class="info-name">
-		<h2><a href="/shop/73538226">大拇指龙虾王(三里屯工体店)</a></h2>
-		<div class="comment-rst">
-			    <span title="五星商户" class="item-rank-rst irr-star50" itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
-				    <meta itemprop="rating" content="5">评分:五星商户
-			    </span>
-                人均<strong class="stress">
-                ¥95
-            </strong>
 
-		</div>
-	</div>
-	<div class="info-list">
-		<ul>
-			<li><em class="tit">地址：</em><a href="/shop/73538226/map">工体北路1号育膳房1层</a></li>
-			<li><em class="tit">电话：</em>010-80698604</li>
-			<li><a href="/shop/73538226">环境、优惠、交通等更多信息»</a></li>
-		</ul>
-	</div>
-</div>
+<div class="panel panel-default" style="display:inline-block;vertical-align:top;width:300px">
+    <div class="panel-heading">
+        <h3><a href="{% url 'store' store.id %}">{{store.name}}</a></h3>
+        <small>
+            电话：{{store.phone_number}}<br>
+            地址：{{store.address}}
+        </small>
     </div>
+    <div class="panel-body word-wrap">
+        可增加内容
+    </div>
+    <div class="panel-footer"></div>
+</div>
+
 {% endblock %}
