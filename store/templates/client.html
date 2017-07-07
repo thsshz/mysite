@@ -3,9 +3,31 @@
 
 {% block content %}
 <div>
-<div>
     <h3>{{user.username}}</h3>
     <div class="panel-footer"></div>
+<ul class="list-group">
+    <li class="list-group-item">收藏店铺</li>
+    {% for like_store in like_stores%}
+    <li class="list-group-item clearfix">
+    <div>
+	<div class="info-name">
+		<h3><a href="{% url 'store' like_store.id %}">{{like_store.name}}</a></h3>
+	</div>
+    </div>
+</li>
+{% endfor %}
+</ul>
+<ul class="list-group">
+    <li class="list-group-item">我的评论</li>
+    {% for review in reviews%}
+    <li class="list-group-item clearfix">
+    <div>
+        <div class="info-name">
+                <h3>{{review.id}}</h3>
+        </div>
+    </div>
+</li>
+{% endfor %}
+</ul>
 </div>
-
 {% endblock %}

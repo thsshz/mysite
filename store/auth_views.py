@@ -43,15 +43,16 @@ def logout(request):
 #likestore
 def likestore(request, user_id, store_id):
     user = User.objects.filter(id=user_id)[0]
-    print(1)
     client = Client.objects.filter(user=user)[0]
-    print(2)
     store = Store.objects.filter(id=store_id)[0]
-    print(3)
     client.like_stores.add(store)
-    print(4)
     client.save()
     return redirect('store', store_id)
 
-def client(request):
-    return render(request, 'client.html')
+def client(request, user_id):
+    user = User.objects.filter(id=user_id)[0]
+    client = Client.objects.filter(user=user)[0]
+    like_stores = client.like_stores.all()
+    reviews = client.reviews.all()
+    return render(request, 'client.html', {'like_stores': like_stores, 'reviews': reviews})
+    

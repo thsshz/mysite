@@ -290,13 +290,17 @@ def review_star_sort(request, store_id, star):
 
 
 @require_POST
-def write_review(request, store_id):
+def write_review(request, store_id, user_id):
     store = get_object_or_404(Store, pk=store_id)
     form = ReviewForm(request.POST)
     if form.is_valid():
         review = form.save(commit=False)
         review.store = store
         review.like = 0
+        user = User.objects.filter(id=user_id)[0]
+        client = Client.objects.filter(user=user)[0]
+        review.author = user.name
+        review.client = client
         print(review.save())
         messages.info(request, '您为商家{}填写的评论发表成功'.format(store.name))
     else:

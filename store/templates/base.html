@@ -29,7 +29,7 @@
                     <a href="{% url 'logout' %}">登出</a>
                     </li>
                     <li role="presentation">
-                    <a href="{% url 'client' %}">{{user.username}}</a>
+                    <a href="{% url 'client' user.id%}">{{user.username}}</a>
                     </li>
                 {% else %}
                     <li role="presentation">

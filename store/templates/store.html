@@ -82,18 +82,20 @@
 {% endfor %}
 </ul>
 </div>
+{% if user.is_authenticated %}
 <div><img src="{% static head %}"></div>
 <br><br>
 <div class="panel panel-default">
     <div class="panel-heading">填写评论</div>
     <div class="panel-body">
-        <form method="POST" action="{% url 'write_review' store.id %}">
+        <form method="POST" action="{% url 'write_review' store.id user.id%}">
             {% csrf_token %}
             {% bootstrap_form review_form layout='inline' %}
             {% buttons submit='提交' %}{% endbuttons %}
         </form>
     </div>
 </div>
+{% endif %}
 </div>
 
 {% endblock %}

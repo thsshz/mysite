@@ -33,6 +33,7 @@ class Review(models.Model):
     like = models.IntegerField(verbose_name="点赞数")
     tfidf_info = models.TextField(default = '')
     similarity = models.FloatField(default = 1.0)
+    client = models.ForeignKey('Client', related_name='reviews', related_query_name='review')
 
 
 class Idf(models.Model):
@@ -66,4 +67,3 @@ class Client(models.Model):
     # id = models.IntegerField()
     user = models.OneToOneField(User)
     like_stores = models.ManyToManyField(Store)
-    like_reviews = models.ManyToManyField(Review) 
