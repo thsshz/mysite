@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="main" style="width:1000px">
+    <form method="post" action="{% url 'search_paragraph' %}">
+        {% csrf_token %}
+        <input type="text" name="search_str" placeholder="搜索评论" style="width:250px" required="required"/>
+        <input type="submit" value="点击搜索"/>
+    </form>
+</div>
+<div>
+    <ul class="list-group">
+        {% ifequal flag True %}
+        <li class="list-group-item">
+            点评搜索结果：
+        </li>
+        {% endifequal %}
+        {% for review in reviews %}
+        <li class="list-group-item clearfix">
+            <div>
+                {% bootstrap_icon 'user' %}<b>{{review.author}}</b>
+                {% bootstrap_icon 'time' %}{{review.create_at}}
+            </div>
+            <div class="pull-right"><small>赞({{review.like}})</small></div>
+            <div>
+                <small>
+                    总体：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
+                </small>
+            </div>
+            <div class="word-wrap">{{review}}</div>
+        </li>
+        {% endfor %}
+
+    </ul>
+</div>
+{% endblock %}

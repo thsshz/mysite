@@ -33,17 +33,19 @@
         <div class="pull-right"><small>赞({{review.like}})</small></div>
         <div>
             <small>
-                星级：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
+                总体：{{review.star}}星&emsp;&emsp;口味：{{review.taste_score}}&emsp;&emsp;环境：{{review.environment_score}}&emsp;&emsp;服务：{{review.service_score}}
             </small>
         </div>
-        <div class="word-wrap">{{review.content}}</div>
+        <div class="word-wrap">{{review.content|linebreaks}}</div>
     </li>
     {% endfor %}
-    <div class="pull-right">
+
+    <div>
     <!-- 如果当前是第一页，就不显示【上一页】链接 -->
+        <br>
     {% ifnotequal curPage 1 %}
-    <a href="?curPage={{ curPage|add:'-1' }}&&allPage={{ allPage }}&&pageType=pageUp">
-        上一页
+    <a href="?curPage={{ curPage|add:'-1' }}&&allPage={{ allPage }}">
+        上一页&emsp;
     </a>
     {% endifnotequal %}
 
@@ -51,15 +53,16 @@
 
     <!-- 如果当前是最后一页，就不显示【下一页】链接 -->
     {% ifnotequal curPage allPage %}
-    <a href="?curPage={{ curPage|add:'1' }}&&allPage={{ allPage }}&&pageType=pageDown">
-        下一页
+    <a href="?curPage={{ curPage|add:'1' }}&&allPage={{ allPage }}">
+        &emsp;下一页
     </a>
     {% endifnotequal %}
     </div>
 </ul>
 </div>
 
-<div class="panel panel-default" style="display:inline-block;vertical-align:top;width:300px">
+<div class="aside" style="display:inline-block;vertical-align:top;width:300px">
+<div class="panel panel-default">
     <div class="panel-heading">
         <h3><a href="{% url 'store' store.id %}">{{store.name}}</a></h3>
         <small>
@@ -71,6 +74,17 @@
         可增加内容
     </div>
     <div class="panel-footer"></div>
+</div>
+<div>
+    <form method="post" action="{% url 'review_match' store.id %}">
+        {% csrf_token %}
+        <input type="text" name="search_text" placeholder="在评论中搜索" style="width:250px" required="required"/>
+        <input type="submit"/>
+    </form>
+    <br>
+    <a href="{% url 'search_paragraph' %}">评论搜索
+    </a>
+</div>
 </div>
 
 {% endblock %}
